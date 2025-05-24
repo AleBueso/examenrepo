@@ -106,9 +106,6 @@ void generarFibonacci() {
     return;
   }
 
-  List<int> secuencia = generarFibonacci(n);
-  mostrarResultado("Secuencia de Fibonacci: ${secuencia.join(', ')}");
-}
 
 void calcularAreasGeometricas() {
   print("--- CÁLCULO DE ÁREAS GEOMÉTRICAS ---");
