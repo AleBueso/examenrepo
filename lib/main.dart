@@ -1,122 +1,154 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'operaciones_basicas.dart';
+import 'numeros_primos.dart';
+import 'pares_impares.dart';
+//import 'package:examen1/fibonacci.dart';
+import 'areas_geometricas.dart';
+import 'validaciones.dart';
+import 'utilidades.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void mostrarMenuPrincipal() {
+  while (true) {
+    print("===== CALCULADORA MATEMÁTICA AVANZADA =====");
+    print("1. Suma");
+    print("2. Resta");
+    print("3. Multiplicación");
+    print("4. División");
+    print("5. Números Primos en un Rango");
+    print("6. Números Pares e Impares en un Rango");
+    print("7. Secuencia de Fibonacci");
+    print("8. Cálculo de Áreas Geométricas");
+    print("9. Salir");
+    print("===========================================");
+    stdout.write("Seleccione una opción (1-9): ");
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+    String? opcion = stdin.readLineSync();
+    if (opcion == '9') break;
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    switch (opcion) {
+      case '1':
+        realizarOperacionBasica(suma);
+        break;
+      case '2':
+        realizarOperacionBasica(resta);
+        break;
+      case '3':
+        realizarOperacionBasica(multiplicacion);
+        break;
+      case '4':
+        realizarOperacionBasica(division);
+        break;
+      case '5':
+        calcularNumerosPrimos();
+        break;
+      case '6':
+        clasificarParesImpares();
+        break;
+      case '7':
+        generarFibonacci();
+        break;
+      case '8':
+        calcularAreasGeometricas();
+        break;
+      default:
+        print("Opción no válida.");
+    }
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+void realizarOperacionBasica(Function operacion) {
+  stdout.write("Ingrese el primer número: ");
+  double a = double.parse(stdin.readLineSync()!);
+  stdout.write("Ingrese el segundo número: ");
+  double b = double.parse(stdin.readLineSync()!);
+  double resultado = operacion(a, b);
+  mostrarResultado("Resultado: $resultado");
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+void calcularNumerosPrimos() {
+  stdout.write("Ingrese el número inicial del rango: ");
+  int inicio = int.parse(stdin.readLineSync()!);
+  stdout.write("Ingrese el número final del rango: ");
+  int fin = int.parse(stdin.readLineSync()!);
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  if (!validarRango(inicio, fin)) {
+    mostrarResultado("Rango inválido.");
+    return;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+  List<int> primos = obtenerNumerosPrimos(inicio, fin);
+  mostrarResultado("Números primos encontrados: ${primos.join(', ')}");
+}
+
+void clasificarParesImpares() {
+  stdout.write("Ingrese el número inicial del rango: ");
+  int inicio = int.parse(stdin.readLineSync()!);
+  stdout.write("Ingrese el número final del rango: ");
+  int fin = int.parse(stdin.readLineSync()!);
+
+  if (!validarRango(inicio, fin)) {
+    mostrarResultado("Rango inválido.");
+    return;
+  }
+
+  List<int> pares = obtenerPares(inicio, fin);
+  List<int> impares = obtenerImpares(inicio, fin);
+  mostrarResultado("Números pares: ${pares.join(', ')}");
+  mostrarResultado("Números impares: ${impares.join(', ')}");
+}
+
+void generarFibonacci() {
+  stdout.write("¿Cuántos términos desea generar?: ");
+  int n = int.parse(stdin.readLineSync()!);
+
+  if (n <= 0) {
+    mostrarResultado("Número de términos debe ser mayor que 0.");
+    return;
+  }
+
+  List<int> secuencia = generarFibonacci(n);
+  mostrarResultado("Secuencia de Fibonacci: ${secuencia.join(', ')}");
+}
+
+void calcularAreasGeometricas() {
+  print("--- CÁLCULO DE ÁREAS GEOMÉTRICAS ---");
+  print("1. Círculo");
+  print("2. Rectángulo");
+  print("3. Triángulo");
+  print("4. Cuadrado");
+  stdout.write("Seleccione una figura (1-4): ");
+
+  String? figura = stdin.readLineSync();
+  switch (figura) {
+    case '1':
+      stdout.write("Ingrese el radio: ");
+      double radio = double.parse(stdin.readLineSync()!);
+      double area = areaCirculo(radio);
+      mostrarResultado("Área del círculo: $area");
+      break;
+    case '2':
+      stdout.write("Ingrese la base: ");
+      double base = double.parse(stdin.readLineSync()!);
+      stdout.write("Ingrese la altura: ");
+      double altura = double.parse(stdin.readLineSync()!);
+      double areaRect = areaRectangulo(base, altura);
+      mostrarResultado("Área del rectángulo: $areaRect");
+      break;
+    case '3':
+      stdout.write("Ingrese la base: ");
+      double baseTri = double.parse(stdin.readLineSync()!);
+      stdout.write("Ingrese la altura: ");
+      double alturaTri = double.parse(stdin.readLineSync()!);
+      double areaTri = areaTriangulo(baseTri, alturaTri);
+      mostrarResultado("Área del triángulo: $areaTri");
+      break;
+    case '4':
+      stdout.write("Ingrese la longitud del lado: ");
+      double lado = double.parse(stdin.readLineSync()!);
+      double areaCuad = areaCuadrado(lado);
+      mostrarResultado("Área del cuadrado: $areaCuad");
+      break;
+    default:
+      mostrarResultado("Opción no válida.");
   }
 }
